@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tamil Grammar Checker for Word</title>
+  <link rel="icon" href="assets/icon-32.png" />
+  <style>
+    :root { --ink:#1f2328; --muted:#59636e; --line:#d8dee4; --soft:#f6f8fa; --accent:#1c5aa0;
+      font-family: "Nirmala UI","Latha","Tamil Sangam MN","Noto Sans Tamil","Segoe UI",system-ui,sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: #fff; line-height: 1.6; }
+    main { max-width: 760px; margin: 0 auto; padding: 40px 20px 60px; }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    h1 { font-size: clamp(26px, 5vw, 36px); line-height: 1.15; margin: 0; }
+    .sub { color: var(--muted); margin: 4px 0 0; }
+    .lead { font-size: 17px; margin: 24px 0; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 32px; }
+    .btn { display: inline-block; padding: 11px 18px; border-radius: 8px; font-weight: 600; text-decoration: none; }
+    .primary { background: var(--accent); color: #fff; }
+    .ghost { border: 1px solid var(--line); color: var(--ink); }
+    h2 { font-size: 19px; margin: 32px 0 8px; }
+    ol li { margin: 6px 0; }
+    .note { background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; font-size: 14.5px; }
+    code { background: var(--soft); padding: 1px 5px; border-radius: 4px; }
+    footer { color: var(--muted); font-size: 13px; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand">
+      <img src="assets/icon-64.png" width="56" height="56" alt="" />
+      <div>
+        <h1>தமிழ் இலக்கணப் பிழை திருத்தி</h1>
+        <p class="sub">Tamil Grammar Checker for Microsoft Word</p>
+      </div>
+    </div>
+
+    <p class="lead">Word-இல் தமிழ் எழுத்துப் பிழை, புணர்ச்சி (வல்லினம் மிகும் / மிகா), எழுவாய்–பயனிலை இயைபு, நடை ஆகியவற்றைச் சரிபார்க்கும் செருகுநிரல்.
+      It checks Tamil spelling, sandhi, subject–verb agreement and style, and offers one-click fixes. Your text never leaves your computer.</p>
+
+    <div class="buttons">
+      <a class="btn primary" href="manifest.xml" download="tamil-grammar-manifest.xml">Manifest கோப்பைப் பதிவிறக்கு · Download manifest</a>
+      <a class="btn ghost" href="playground.html">இணையத்தில் முயன்று பார் · Try it online</a>
+    </div>
+
+    <h2>Word-இல் நிறுவுதல் · Install in Word</h2>
+    <ol>
+      <li>மேலே உள்ள <b>Download manifest</b> பொத்தானை அழுத்திக் கோப்பைச் சேமிக்கவும். (If the file opens as text instead, right-click the button and choose <i>Save link as</i>.)</li>
+      <li>Word-ஐத் திறக்கவும்: <b>Word on the web</b> (office.com) or Word for Microsoft 365.</li>
+      <li><b>Insert → Add-ins → More Settings / My Add-ins → Upload My Add-in</b> → choose the saved file → <b>Upload</b>.</li>
+      <li><b>Home → Tamil Grammar</b> பொத்தானை அழுத்தி, <b>சரிபார் · Check</b> அழுத்தவும்.</li>
+    </ol>
+    <p class="note">Underlines inside the document need Word with a Microsoft 365 subscription. On other versions the issues are listed in the side panel, with fix buttons.</p>
+
+    <h2>சோதனை வாக்கியம் · Try this sentence</h2>
+    <p><code>நான் அவனை கண்டேன். பறவைகள் பறந்தது.</code> → அவனைக் கண்டேன், பறந்தன.</p>
+
+    <footer>Rules follow இளங்கோ தமிழ் இலக்கணம் (1942) and மழவை மகாலிங்க ஐயர், தமிழ் இலக்கணம்.</footer>
+  </main>
+</body>
+</html>
