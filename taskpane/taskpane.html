@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tamil Grammar Checker</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <link rel="stylesheet" href="taskpane.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img src="../assets/icon-32.png" alt="" width="24" height="24" />
+      <div>
+        <div class="title">தமிழ் இலக்கணம்</div>
+        <div class="subtitle">Tamil Grammar Checker</div>
+      </div>
+    </div>
+    <button id="check" class="primary" disabled>சரிபார் · Check</button>
+  </header>
+
+  <section id="summary" class="summary" hidden>
+    <span class="pill error"><b id="n-error">0</b> பிழை</span>
+    <span class="pill warning"><b id="n-warning">0</b> எச்சரிக்கை</span>
+    <span class="pill suggestion"><b id="n-suggestion">0</b> பரிந்துரை</span>
+  </section>
+
+  <div id="status" class="status">Word-இல் ஏற்றப்படுகிறது… / Loading…</div>
+
+  <main id="list" class="list" aria-live="polite"></main>
+
+  <details class="settings">
+    <summary>அமைப்புகள் · Settings</summary>
+    <label><input type="checkbox" id="opt-formal" checked /> செந்தமிழ் நடை (flag spoken forms &amp; loanwords)</label>
+    <label><input type="checkbox" id="opt-suggestions" checked /> பரிந்துரைகளைக் காட்டு (show suggestions)</label>
+    <label><input type="checkbox" id="opt-live" /> தட்டச்சு செய்யும்போதே சரிபார் (check as I type)</label>
+    <label><input type="checkbox" id="opt-underline" checked /> ஆவணத்தில் அடிக்கோடு (underline in document)</label>
+    <p class="note" id="api-note"></p>
+    <button id="reset-ignored" class="link">புறக்கணித்தவற்றை மீட்டமை · Reset ignored</button>
+  </details>
+
+  <script src="../engine/lexicon.js"></script>
+  <script src="../engine/checker.js"></script>
+  <script src="taskpane.js"></script>
+</body>
+</html>

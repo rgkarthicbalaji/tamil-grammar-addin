@@ -1,0 +1,57 @@
+:root {
+  --ink: #1f2328;
+  --muted: #59636e;
+  --line: #d8dee4;
+  --bg: #ffffff;
+  --soft: #f6f8fa;
+  --accent: #1c5aa0;
+  --error: #c62828;
+  --warning: #8a4fbf;
+  --suggestion: #1d6fd6;
+  font-family: "Nirmala UI", "Latha", "Tamil Sangam MN", "Noto Sans Tamil", "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: var(--bg); font-size: 14px; line-height: 1.45; }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 2; }
+.brand { display: flex; align-items: center; gap: 8px; }
+.title { font-weight: 700; font-size: 15px; }
+.subtitle { color: var(--muted); font-size: 11.5px; }
+
+button { font: inherit; cursor: pointer; }
+button.primary { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 7px 12px; font-weight: 600; white-space: nowrap; }
+button.primary:disabled { opacity: .5; cursor: default; }
+button.link { background: none; border: 0; color: var(--accent); padding: 0; text-decoration: underline; font-size: 12.5px; }
+
+.summary { display: flex; gap: 6px; padding: 10px 12px 0; flex-wrap: wrap; }
+.pill { border-radius: 999px; padding: 2px 10px; font-size: 12.5px; background: var(--soft); border: 1px solid var(--line); }
+.pill.error b { color: var(--error); }
+.pill.warning b { color: var(--warning); }
+.pill.suggestion b { color: var(--suggestion); }
+
+.status { color: var(--muted); padding: 10px 12px; font-size: 13px; }
+.status.ok { color: #1a7f37; }
+
+.list { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px; }
+.card { border: 1px solid var(--line); border-left: 4px solid var(--muted); border-radius: 8px; padding: 10px; background: var(--bg); }
+.card.error { border-left-color: var(--error); }
+.card.warning { border-left-color: var(--warning); }
+.card.suggestion { border-left-color: var(--suggestion); }
+.card:hover { background: var(--soft); }
+.card .meta { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); }
+.card .rule { font-family: ui-monospace, Consolas, monospace; }
+.card .goto { background: none; border: 0; color: var(--accent); padding: 0; font-size: 11.5px; }
+.card .msg { margin: 6px 0 2px; }
+.card .en { color: var(--muted); font-size: 12.5px; }
+.card .fix { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
+.card .wrong { text-decoration: line-through; text-decoration-color: var(--error); color: var(--muted); }
+.card .arrow { color: var(--muted); }
+.card .sugg { border: 1px solid var(--accent); color: var(--accent); background: #fff; border-radius: 6px; padding: 2px 8px; font-weight: 600; }
+.card .sugg:hover { background: var(--accent); color: #fff; }
+.card .ignore { margin-left: auto; background: none; border: 0; color: var(--muted); font-size: 12px; text-decoration: underline; }
+.para-label { font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+
+.settings { border-top: 1px solid var(--line); padding: 10px 12px 16px; font-size: 13px; }
+.settings summary { cursor: pointer; font-weight: 600; margin-bottom: 6px; }
+.settings label { display: block; margin: 6px 0; }
+.note { color: var(--muted); font-size: 12px; }

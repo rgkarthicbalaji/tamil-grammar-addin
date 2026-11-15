@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tamil Grammar Checker — Playground</title>
+  <style>
+    :root { --ink:#1f2328; --muted:#59636e; --line:#d8dee4; --soft:#f6f8fa; --accent:#1c5aa0; --error:#c62828; --warning:#8a4fbf; --suggestion:#1d6fd6;
+      font-family: "Nirmala UI","Latha","Tamil Sangam MN","Noto Sans Tamil","Segoe UI",system-ui,sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: #fff; }
+    header { padding: 20px 24px 8px; max-width: 1100px; margin: 0 auto; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    header p { margin: 0; color: var(--muted); font-size: 14px; }
+    .wrap { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; padding: 12px 24px 32px; max-width: 1100px; margin: 0 auto; }
+    @media (max-width: 800px) { .wrap { grid-template-columns: 1fr; } }
+    textarea { width: 100%; min-height: 180px; font: inherit; font-size: 17px; line-height: 1.7; padding: 12px; border: 1px solid var(--line); border-radius: 8px; resize: vertical; }
+    .bar { display: flex; gap: 8px; align-items: center; margin: 10px 0; flex-wrap: wrap; }
+    button { font: inherit; cursor: pointer; }
+    .primary { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; }
+    .ghost { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 7px 12px; }
+    label { font-size: 13.5px; color: var(--muted); }
+    .view { border: 1px solid var(--line); border-radius: 8px; padding: 12px; font-size: 17px; line-height: 1.9; white-space: pre-wrap; background: var(--soft); min-height: 60px; }
+    .u { cursor: pointer; text-decoration: underline wavy; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+    .u.error { text-decoration-color: var(--error); }
+    .u.warning { text-decoration-color: var(--warning); }
+    .u.suggestion { text-decoration-color: var(--suggestion); }
+    .u.active { background: #fff3c4; }
+    h2 { font-size: 14px; margin: 0 0 8px; color: var(--muted); font-weight: 600; }
+    .pills { display: flex; gap: 6px; margin-bottom: 10px; }
+    .pill { border-radius: 999px; padding: 2px 10px; font-size: 12.5px; background: var(--soft); border: 1px solid var(--line); }
+    .pill.error b { color: var(--error); } .pill.warning b { color: var(--warning); } .pill.suggestion b { color: var(--suggestion); }
+    .card { border: 1px solid var(--line); border-left: 4px solid var(--muted); border-radius: 8px; padding: 10px; margin-bottom: 8px; font-size: 14px; }
+    .card.error { border-left-color: var(--error); } .card.warning { border-left-color: var(--warning); } .card.suggestion { border-left-color: var(--suggestion); }
+    .card.active { box-shadow: 0 0 0 2px #f2c94c; }
+    .meta { font-size: 11.5px; color: var(--muted); font-family: ui-monospace, Consolas, monospace; }
+    .en { color: var(--muted); font-size: 12.5px; }
+    .fix { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
+    .wrong { text-decoration: line-through; text-decoration-color: var(--error); color: var(--muted); }
+    .sugg { border: 1px solid var(--accent); color: var(--accent); background: #fff; border-radius: 6px; padding: 2px 8px; font-weight: 600; }
+    .sugg:hover { background: var(--accent); color: #fff; }
+    .empty { color: #1a7f37; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>தமிழ் இலக்கணப் பிழை திருத்தி · Playground</h1>
+    <p>The same rule engine that runs inside the Word add-in. Type or paste Tamil text, then press Check.</p>
+  </header>
+  <div class="wrap">
+    <div>
+      <textarea id="input" spellcheck="false">நான் நேற்று அவனை பார்த்தான். அந்த காகம் மரத்தில் அமர்ந்தது. பறவைகள் பறந்தது. படித்தப் பையன் வந்துப் போனான். ஒருப் புத்தகம் கொடு. அவனுக்கு சோறு கொடுத்தேன். அவன் வீடுக்கு சென்றான்.
+அவர்கள் வந்தாங்க. நான் ஏற்கனவே சொன்னேன். என்ன சார், அவன் வந்தானா.</textarea>
+      <div class="bar">
+        <button class="primary" id="run">சரிபார் · Check</button>
+        <button class="ghost" id="fixall">எல்லாப் பிழைகளையும் திருத்து · Fix all errors</button>
+        <label><input type="checkbox" id="formal" checked> செந்தமிழ் நடை (formal style)</label>
+        <label><input type="checkbox" id="sugg" checked> பரிந்துரைகள் (suggestions)</label>
+      </div>
+      <div class="view" id="view"></div>
+    </div>
+    <div>
+      <h2>குறிப்புகள் · Issues</h2>
+      <div class="pills"><span class="pill error"><b id="ne">0</b> பிழை</span><span class="pill warning"><b id="nw">0</b> எச்சரிக்கை</span><span class="pill suggestion"><b id="ns">0</b> பரிந்துரை</span></div>
+      <div id="cards"></div>
+    </div>
+  </div>
+  <!--ENGINE-->
+  <script src="engine/lexicon.js"></script>
+  <script src="engine/checker.js"></script>
+  <!--/ENGINE-->
+  <script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x !== undefined) e.textContent = x; return e; };
+    let issues = [];
+    const opts = () => ({ formal: $("formal").checked, minSeverity: $("sugg").checked ? "suggestion" : "warning" });
+
+    // check each line as its own paragraph, with offsets mapped back to the whole text
+    function checkAll(text) {
+      const out = []; let off = 0;
+      for (const line of text.split("\n")) {
+        TamilChecker.checkParagraph(line, opts()).forEach((i) => out.push(Object.assign({}, i, { start: i.start + off })));
+        off += line.length + 1;
+      }
+      return out;
+    }
+    function apply(it, s) {
+      const t = $("input").value;
+      $("input").value = t.slice(0, it.start) + s + t.slice(it.start + it.length);
+      run();
+    }
+    function focus(k) {
+      document.querySelectorAll(".active").forEach((n) => n.classList.remove("active"));
+      document.querySelectorAll('[data-k="' + k + '"]').forEach((n) => n.classList.add("active"));
+      const c = document.querySelector('.card[data-k="' + k + '"]'); if (c) c.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+    function run() {
+      const text = $("input").value;
+      issues = checkAll(text);
+      // underlined view (non-overlapping spans, earliest first)
+      const view = $("view"); view.textContent = "";
+      let pos = 0;
+      issues.forEach((it, k) => {
+        if (it.start < pos) return;
+        view.append(document.createTextNode(text.slice(pos, it.start)));
+        const u = el("span", "u " + it.severity, text.substr(it.start, it.length) || " ");
+        u.dataset.k = k; u.title = it.message_en; u.onclick = () => focus(k);
+        view.append(u); pos = it.start + it.length;
+      });
+      view.append(document.createTextNode(text.slice(pos)));
+      // cards
+      const cards = $("cards"); cards.textContent = "";
+      const n = { error: 0, warning: 0, suggestion: 0 };
+      issues.forEach((it, k) => {
+        n[it.severity]++;
+        const c = el("div", "card " + it.severity); c.dataset.k = k; c.onclick = () => focus(k);
+        c.append(el("div", "meta", it.rule + " · " + it.severity));
+        c.append(el("div", "", it.message_ta));
+        c.append(el("div", "en", it.message_en));
+        const f = el("div", "fix"); f.append(el("span", "wrong", it.text.trim() || "␣"));
+        it.suggestions.slice(0, 3).forEach((s) => { const b = el("button", "sugg", s.trim() || "␣"); b.onclick = (e) => { e.stopPropagation(); apply(it, s); }; f.append("→", b); });
+        c.append(f); cards.append(c);
+      });
+      if (!issues.length) cards.append(el("div", "empty", "பிழைகள் இல்லை ✓ No issues found."));
+      $("ne").textContent = n.error; $("nw").textContent = n.warning; $("ns").textContent = n.suggestion;
+    }
+    function fixAll() {
+      // apply first suggestion of every error, right to left so offsets stay valid
+      // repeat: one fix can reveal the next (வீடுக்கு → வீட்டுக்கு → வீட்டுக்குச்)
+      let t = $("input").value;
+      for (let pass = 0; pass < 4; pass++) {
+        const errs = checkAll(t).filter((i) => i.severity === "error" && i.suggestions.length).sort((a, b) => b.start - a.start);
+        if (!errs.length) break;
+        let lastStart = Infinity;
+        errs.forEach((i) => { if (i.start + i.length <= lastStart) { t = t.slice(0, i.start) + i.suggestions[0] + t.slice(i.start + i.length); lastStart = i.start; } });
+      }
+      $("input").value = t; run();
+    }
+    $("run").onclick = run; $("fixall").onclick = fixAll;
+    $("formal").onchange = run; $("sugg").onchange = run;
+    let timer; $("input").addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(run, 400); });
+    run();
+  })();
+  </script>
+</body>
+</html>
